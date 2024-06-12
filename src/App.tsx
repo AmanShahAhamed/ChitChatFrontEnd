@@ -1,5 +1,5 @@
 import "./App.css";
-import PageLayout from "./components/layout/layout";
+import PageLayout from "./pages/layout/layout";
 
 function App() {
   return (

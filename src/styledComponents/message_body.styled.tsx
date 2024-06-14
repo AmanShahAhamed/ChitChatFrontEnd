@@ -18,7 +18,6 @@ export const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 60vh;
   margin: auto;
   overflow: hidden;
 `;

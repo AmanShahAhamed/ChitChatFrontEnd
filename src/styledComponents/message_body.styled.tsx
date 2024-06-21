@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 interface IMessageBoxProps {
-  sent?: boolean;
+  sent?: string | undefined;
 }
 
 export const MessageBox = styled.div<IMessageBoxProps>`

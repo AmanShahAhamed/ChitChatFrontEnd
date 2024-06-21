@@ -9,6 +9,7 @@ import React from "react";
 import SendMessageInput from "./components/sendMessageInput";
 import UInfiniteScroll from "../../components/InfiniteScroll";
 import { useAutoScroll } from "../../hooks/useAutoScroll";
+import { Parser } from "html-to-react";
 
 const receivedMsgs: string[] = [
   "Hii where are you Hii where are you Hii where are you Hii where are you Hii where are you",
@@ -18,7 +19,9 @@ const receivedMsgs: string[] = [
 const ChatScreen: React.FC = () => {
   const [msg, setMsg] = React.useState<string[]>(receivedMsgs);
   const [autoScroll] = useAutoScroll(msg);
-  console.log("Chat screen rerender..");
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  const htmlParser = new Parser();
 
   return (
     <Card
@@ -33,8 +36,8 @@ const ChatScreen: React.FC = () => {
         child={
           <ChatContainer>
             {msg.map((m, i) => (
-              <MessageBox key={i} sent={i == 1 ? true : false}>
-                {m}
+              <MessageBox key={i} sent={i == 1 ? "true" : undefined}>
+                {htmlParser.parse(m.replace(/\n/g, "<br />"))}
               </MessageBox>
             ))}
           </ChatContainer>

@@ -1,6 +1,5 @@
-import { Button, InputRef, Space } from "antd";
+import { InputRef } from "antd";
 import React, { useRef } from "react";
-import { IoIosSend } from "react-icons/io";
 import { useMount } from "../../../hooks/useMount";
 import TextArea from "antd/es/input/TextArea";
 
@@ -23,8 +22,17 @@ const SendMessageInput: React.FC<IProps> = ({ setMsg }) => {
     if (inputRef.current) inputRef.current.focus();
   });
 
+  useMount(() => {
+    if (inputRef.current) {
+      const textarea = inputRef.current.resizableTextArea.textArea;
+      textarea.style.height = "auto";
+      console.log(textarea.scrollHeight, textarea.clientHeight);
+      textarea.style.height = `${textarea.scrollHeight}px`;
+      textarea.style.bottom = `${textarea.scrollHeight}px`;
+    }
+  }, [value.split("\n").length]);
+
   const enterHandler = () => {
-    console.log("enter is press");
     if (value === "") return;
     setMsg((prev) => [...prev, value]);
     setValue("");
@@ -32,8 +40,8 @@ const SendMessageInput: React.FC<IProps> = ({ setMsg }) => {
   };
 
   const handleKeyUp = (e: KeyboardEvent) => {
-    if (keyController.shift && e.key === "Enter") {
-      console.log("Some logic");
+    if (e.key === "Enter" && keyController.shift) {
+      console.log("Event...", inputRef.current);
     }
     if (e.key === "Enter" && !keyController.shift) enterHandler();
     if (e.key === "Shift") keyController.shift = false;
@@ -63,14 +71,6 @@ const SendMessageInput: React.FC<IProps> = ({ setMsg }) => {
         onKeyUp={handleKeyUp}
         value={value}
         onChange={(e) => setValue(() => e.target.value)}
-        addonAfter={
-          <Space>
-            <Button
-              type="text"
-              icon={<IoIosSend style={{ color: "#00b96b", fontSize: "20" }} />}
-            />
-          </Space>
-        }
       />
     </div>
   );

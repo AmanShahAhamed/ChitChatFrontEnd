@@ -10,7 +10,6 @@ interface IUInfintieScrollProps {
 
 const UInfiniteScroll = forwardRef<HTMLDivElement, IUInfintieScrollProps>(
   ({ child, data, height }, ref) => {
-    console.log("Scroll bar rerender", data.length);
     const loadMoreData = () => {};
     return (
       <div
@@ -25,13 +24,14 @@ const UInfiniteScroll = forwardRef<HTMLDivElement, IUInfintieScrollProps>(
         <InfiniteScroll
           dataLength={data.length}
           next={loadMoreData}
-          hasMore={data.length < 50}
+          hasMore={data.length < Number.MAX_VALUE}
           loader={null}
           endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
           scrollableTarget="scrollableDiv"
         >
           {child}
         </InfiniteScroll>
+        <div ref={ref}></div>
       </div>
     );
   }

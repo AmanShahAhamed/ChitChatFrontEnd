@@ -4,9 +4,14 @@ import { useMount } from "./useMount";
 export const useAutoScroll = (items: unknown[] = []) => {
   const ref = React.useRef<HTMLDivElement>(null);
 
-  useMount(() => {
-    if (ref.current) ref.current.scrollTop = ref.current.scrollHeight;
-  }, items as unknown[]);
-
+  useMount(
+    () => {
+      if (ref.current) {
+        const lastNode = ref.current.lastChild as HTMLDivElement;
+        lastNode.scrollIntoView();
+      }
+    },
+    [items] as unknown[]
+  );
   return [ref];
 };

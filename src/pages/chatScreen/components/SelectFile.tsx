@@ -1,15 +1,37 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { iconStyle } from "../constant/style.constant";
 import { Upload } from "antd";
-import type { UploadFile, UploadProps } from "antd";
+import type { GetProp, UploadProps } from "antd";
 import React from "react";
 import { RcFile } from "antd/es/upload";
 
-const SelectFiles: React.FC = () => {
-  const [fileList, setFileList] = React.useState<UploadFile[]>();
+type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
+type TPreviewAction = React.Dispatch<React.SetStateAction<string[]>>;
 
-  const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) =>
-    setFileList(newFileList);
+interface ISelectFileProps {
+  setPreview: TPreviewAction;
+}
+
+const getBase64 = (file: FileType): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
+
+const SelectFiles: React.FC<ISelectFileProps> = ({ setPreview }) => {
+  const handleChange: UploadProps["onChange"] = async ({
+    fileList: newFileList,
+  }) => {
+    const res = await Promise.all(
+      newFileList.map((file) => {
+        return getBase64(file.originFileObj as FileType);
+      })
+    );
+    console.log("Res...", res);
+    setPreview((prev) => [...prev, ...res]);
+  };
 
   const handleUpload = (file: RcFile) => {
     console.log("File...", file);
@@ -17,7 +39,7 @@ const SelectFiles: React.FC = () => {
   };
 
   return (
-    <Upload fileList={fileList} onChange={handleChange} action={handleUpload}>
+    <Upload onChange={handleChange} action={handleUpload} multiple={true}>
       <PlusOutlined style={iconStyle} />
     </Upload>
   );

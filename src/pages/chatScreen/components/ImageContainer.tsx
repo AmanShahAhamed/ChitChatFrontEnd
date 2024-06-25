@@ -1,5 +1,8 @@
-const ImageContainer: React.FC = () => {
-  return <img style={imgStyle} src="logo.jpg"></img>;
+interface IImageContainerProps {
+  url: string;
+}
+const ImageContainer: React.FC<IImageContainerProps> = ({ url }) => {
+  return <img style={imgStyle} src={url}></img>;
 };
 
 const imgStyle: React.CSSProperties = {

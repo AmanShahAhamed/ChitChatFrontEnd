@@ -3,9 +3,10 @@ import React, { useRef } from "react";
 import { useMount } from "../../../hooks/useMount";
 import TextArea from "antd/es/input/TextArea";
 import { IInputHandler } from "../constant/constant";
+import { IMessage } from "../ChatScreen";
 
 type KeyboardEvent = React.KeyboardEvent<HTMLInputElement>;
-type setMessageAction = React.Dispatch<React.SetStateAction<string[]>>;
+type setMessageAction = React.Dispatch<React.SetStateAction<IMessage[]>>;
 
 const keyController = {
   shift: false,
@@ -13,16 +14,21 @@ const keyController = {
 
 interface IProps {
   setMsg: setMessageAction;
+  placeholder: string;
+  width?: `${number}%`;
 }
 
 export const SendMessageInput = React.forwardRef<IInputHandler, IProps>(
-  ({ setMsg }, ref) => {
+  ({ setMsg, placeholder, width }, ref) => {
     const [value, setValue] = React.useState("");
     const inputRef = useRef<InputRef>(null);
 
     const enterHandler = () => {
       if (value === "") return;
-      setMsg((prev) => [...prev, value]);
+      setMsg((prev) => [
+        ...prev,
+        { content: value, type: "string", isReceived: false },
+      ]);
       setValue("");
       if (inputRef.current) inputRef.current.focus();
     };
@@ -57,8 +63,9 @@ export const SendMessageInput = React.forwardRef<IInputHandler, IProps>(
         size="large"
         style={{
           padding: 10,
+          width: `${width || null}`,
         }}
-        placeholder="Type Message Here...."
+        placeholder={placeholder}
         onKeyDown={(e) => {
           if (e.key !== "Shift") return;
           keyController.shift = true;

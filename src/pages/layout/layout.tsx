@@ -3,7 +3,7 @@ import { Layout, theme } from "antd";
 import PageHeader from "./header";
 import UContent from "./content";
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 
 const PageLayout: React.FC = () => {
   const {
@@ -13,20 +13,19 @@ const PageLayout: React.FC = () => {
   return (
     <Layout style={layoutStyle}>
       <PageHeader />
-      <Content style={{ padding: "0 48px" }}>
+      <Content>
         <div
           style={{
             background: colorBgContainer,
-            padding: 24,
             borderRadius: borderRadiusLG,
           }}
         >
           <UContent />
         </div>
       </Content>
-      <Footer style={{ textAlign: "center" }}>
+      {/* <Footer style={{ textAlign: "center" }}>
         Ant Design ©{new Date().getFullYear()} Created by Ant UED
-      </Footer>
+      </Footer> */}
     </Layout>
   );
 };

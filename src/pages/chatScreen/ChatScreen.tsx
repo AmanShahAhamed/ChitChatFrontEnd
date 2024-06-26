@@ -100,7 +100,7 @@ const ChatScreen: React.FC = () => {
             </Col>
           </Row>
         ) : (
-          <Row>
+          <Row style={{ background: "green " }} className="span_padding_0">
             <Col span={2}>
               <SelectFiles setPreview={setImagePreview} />,
             </Col>

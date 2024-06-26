@@ -10,4 +10,12 @@
 }
 .hideScrollbar::-webkit-scrollbar {
   display: none;
+} 
+
+.ant-card-actions >li {
+ margin:0,
+}
+
+.ant-card .ant-card-actions>li {
+  margin:0
 }
